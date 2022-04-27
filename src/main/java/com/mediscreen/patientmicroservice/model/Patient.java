@@ -2,16 +2,29 @@ package com.mediscreen.patientmicroservice.model;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
+
 
 @Entity
 public class Patient {
+
   @Id
   private Integer id;
+
+  @NotEmpty(message = "FirstName is mandatory")
   private String firstName;
+
+  @NotEmpty(message = "LastName is mandatory")
   private String lastName;
+
+  @NotNull(message = "Date of birth is mandatory")
   private LocalDate dateOfBirth;
+
+  @NotNull(message = "Gender is mandatory")
   private Gender gender;
+
   private String address;
   private String phone;
 
@@ -53,10 +66,6 @@ public class Patient {
 
   public String getPhone() {
     return phone;
-  }
-
-  public void setId(Integer id) {
-    this.id = id;
   }
 
   public void setFirstName(String firstName) {

@@ -35,17 +35,16 @@ public class PatientService {
 
   public Patient updatePatient(int id, Patient patientToUpdate) {
     Optional<Patient> patientIsExist= repository.findById(id);
-    boolean patientIsValid=isValid(patientToUpdate);
 
-    if (patientIsValid & patientIsExist.isPresent()){
-      Patient patient= updateInitialPatient(patientToUpdate, patientIsExist);
+    if (patientIsExist.isPresent()){
+      Patient patient= updateInitialPatient(patientToUpdate, patientIsExist.get());
       return repository.save(patient);
     }
     return null;
   }
 
   public boolean deletePatient(int id) {
-    Optional patient= repository.findById(id);
+    Optional<Patient> patient= repository.findById(id);
 
     if(patient.isPresent()){
       repository.deleteById(id);
@@ -61,18 +60,18 @@ public class PatientService {
         patient.getGender() == null);
   }
 
-  private Patient updateInitialPatient(Patient patientToUpdate, Optional<Patient> patientIsExist) {
-    patientIsExist.get().setFirstName(patientToUpdate.getFirstName());
-    patientIsExist.get().setLastName(patientToUpdate.getLastName());
-    patientIsExist.get().setDateOfBirth(patientToUpdate.getDateOfBirth());
-    patientIsExist.get().setGender(patientToUpdate.getGender());
+  private Patient updateInitialPatient(Patient patientToUpdate, Patient patientIsExist) {
+    patientIsExist.setFirstName(patientToUpdate.getFirstName());
+    patientIsExist.setLastName(patientToUpdate.getLastName());
+    patientIsExist.setDateOfBirth(patientToUpdate.getDateOfBirth());
+    patientIsExist.setGender(patientToUpdate.getGender());
 
     if(patientToUpdate.getAddress()!=null){
-      patientIsExist.get().setAddress(patientToUpdate.getAddress());
+      patientIsExist.setAddress(patientToUpdate.getAddress());
     }
     if (patientToUpdate.getPhone()!=null){
-      patientIsExist.get().setPhone(patientToUpdate.getPhone());
+      patientIsExist.setPhone(patientToUpdate.getPhone());
     }
-    return patientIsExist.get();
+    return patientIsExist;
   }
 }
