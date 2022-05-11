@@ -6,7 +6,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -45,14 +44,14 @@ public class PatientController {
     }return new ResponseEntity<>(HttpStatus.NO_CONTENT);
   }
 
-  @PostMapping("/patients")
-  public ResponseEntity<Patient> addPatient(@Valid @RequestBody Patient patient){
+  @PostMapping(value = "/patients")
+  public ResponseEntity<Patient> addPatient(@RequestBody Patient patient){
     Patient patientSaved=service.addPatient(patient);
     return new ResponseEntity<>(patientSaved,HttpStatus.CREATED);
   }
 
   @PutMapping("/patients/{id}")
-  public ResponseEntity<Patient> getUpdatePatient(@PathVariable int id, @Valid @RequestBody Patient patientToUpdate){
+  public ResponseEntity<Patient> updatePatient(@PathVariable int id, @RequestBody Patient patientToUpdate){
     Patient patientUpdated= service.updatePatient(id, patientToUpdate);
 
     if (Objects.isNull(patientUpdated)) {
@@ -62,12 +61,12 @@ public class PatientController {
   }
 
   @DeleteMapping("/patients/{id}")
-  public ResponseEntity getDeletePatient(@PathVariable int id){
+  public ResponseEntity<Boolean> getDeletePatient(@PathVariable int id){
     boolean patientDeleted= service.deletePatient(id);
 
     if (patientDeleted){
-      return ResponseEntity.ok().build();
+      return new ResponseEntity<>(true, HttpStatus.OK);
     }
-    return ResponseEntity.noContent().build();
+    return new ResponseEntity<>(false, HttpStatus.OK);
   }
 }

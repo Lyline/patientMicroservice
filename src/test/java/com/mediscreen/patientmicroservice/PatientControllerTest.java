@@ -1,6 +1,5 @@
 package com.mediscreen.patientmicroservice;
 
-import com.mediscreen.patientmicroservice.model.Gender;
 import com.mediscreen.patientmicroservice.model.Patient;
 import com.mediscreen.patientmicroservice.model.Patient.PatientBuilder;
 import com.mediscreen.patientmicroservice.service.PatientService;
@@ -21,7 +20,6 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -39,7 +37,7 @@ public class PatientControllerTest {
       .firstName("John")
       .lastName("Doe")
       .dateOfBirth(LocalDate.of(2022,1,1))
-      .gender(Gender.M)
+      .gender("M")
       .address("Address of John")
       .phone("123-456")
       .build();
@@ -49,7 +47,7 @@ public class PatientControllerTest {
       .firstName("Jane")
       .lastName("Doe")
       .dateOfBirth(LocalDate.of(2022,1,1))
-      .gender(Gender.F)
+      .gender("F")
       .build();
 
   @Test
@@ -146,22 +144,6 @@ public class PatientControllerTest {
   }
 
   @Test
-  void givenANewNotValidPatientWhenAddPatientThenReturnStatus422() throws Exception {
-    //Given
-    //When
-    mockMvc.perform(post("/patientAPI/patients")
-        .contentType(MediaType.APPLICATION_JSON)
-        .content("{"+
-            "\"firstName\":null," +
-            "\"lastName\":\"\"," +
-            "\"dateOfBirth\":null," +
-            "\"gender\":null," +
-            "\"address\":null," +
-            "\"phone\":null}"))
-        .andDo(print()).andExpect(status().isUnprocessableEntity());
-  }
-
-  @Test
   void givenAPatientExistingWithAValidUpdateWhenUpdatePatientThenPatientUpdatedWithStatus201() throws Exception {
     //Given
     Patient patientToUpdate= new PatientBuilder()
@@ -169,7 +151,7 @@ public class PatientControllerTest {
         .firstName("Johnny")
         .lastName("Clash")
         .dateOfBirth(LocalDate.of(2022,2,2))
-        .gender(Gender.F)
+        .gender("F")
         .address("Address of John")
         .phone("123-456")
         .build();
@@ -200,23 +182,6 @@ public class PatientControllerTest {
   }
 
   @Test
-  void givenAPatientExistingWithANotValidUpdateWhenUpdatePatientThenReturnStatus422() throws Exception {
-    //Given
-    //When
-    mockMvc.perform(put("/patientAPI/patients/1")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content("{"+
-                "\"firstName\":\"\"," +
-                "\"lastName\":\"\"," +
-                "\"dateOfBirth\":\"\"," +
-                "\"gender\":null," +
-                "\"address\":null," +
-                "\"phone\":null}"))
-
-        .andExpect(status().isUnprocessableEntity());
-  }
-
-  @Test
   void givenAPatientNotExitingWithAValidUpdateWhenUpdatePatientThenReturn204() throws Exception {
     //Given
     when(service.updatePatient(anyInt(),any())).thenReturn(null);
@@ -241,16 +206,18 @@ public class PatientControllerTest {
 
     //When
     mockMvc.perform(delete("/patientAPI/patients/1"))
-        .andExpect(status().isOk());
+        .andExpect(status().isOk())
+        .andExpect(content().string(containsString("true")));
   }
 
   @Test
-  void givenAPatientNotExistingWhenDeletePatientThenReturnStatus204() throws Exception {
+  void givenAPatientNotExistingWhenDeletePatientThenReturnStatus200() throws Exception {
     //Given
     when(service.deletePatient(anyInt())).thenReturn(false);
 
     //When
     mockMvc.perform(delete("/patientAPI/patients/1"))
-        .andExpect(status().isNoContent());
+        .andExpect(status().isOk())
+        .andExpect(content().string(containsString("false")));
   }
 }

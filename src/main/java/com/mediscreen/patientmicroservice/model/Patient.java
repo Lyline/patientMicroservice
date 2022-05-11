@@ -24,7 +24,7 @@ public class Patient {
 
   @Column(name = "gender", columnDefinition = "varchar(1)")
   @NotNull(message = "Gender is mandatory")
-  private Gender gender;
+  private String gender;
 
   private String address;
   private String phone;
@@ -57,7 +57,7 @@ public class Patient {
     return dateOfBirth;
   }
 
-  public Gender getGender() {
+  public String getGender() {
     return gender;
   }
 
@@ -81,7 +81,7 @@ public class Patient {
     this.dateOfBirth = dateOfBirth;
   }
 
-  public void setGender(Gender gender) {
+  public void setGender(String gender) {
     this.gender = gender;
   }
 
@@ -98,7 +98,7 @@ public class Patient {
     private String firstName;
     private String lastName;
     private LocalDate dateOfBirth;
-    private Gender gender;
+    private String gender;
     private String address;
     private String phone;
 
@@ -122,7 +122,7 @@ public class Patient {
       return this;
     }
 
-    public PatientBuilder gender(Gender gender){
+    public PatientBuilder gender(String gender){
       this.gender=gender;
       return this;
     }

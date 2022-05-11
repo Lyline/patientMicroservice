@@ -1,6 +1,5 @@
 package com.mediscreen.patientmicroservice;
 
-import com.mediscreen.patientmicroservice.model.Gender;
 import com.mediscreen.patientmicroservice.model.Patient;
 import com.mediscreen.patientmicroservice.model.Patient.PatientBuilder;
 import com.mediscreen.patientmicroservice.repository.PatientRepository;
@@ -38,7 +37,7 @@ public class PatientServiceTest {
       .firstName("Dave")
       .lastName("Smith")
       .dateOfBirth(LocalDate.of(2022, 1,1))
-      .gender(Gender.M)
+      .gender("M")
       .address("23, Grande Avenue")
       .phone("123-321")
       .build();
@@ -132,7 +131,7 @@ public class PatientServiceTest {
         .firstName("John")
         .lastName("Doe")
         .dateOfBirth(LocalDate.of(2022,1,1))
-        .gender(Gender.M)
+        .gender("M")
         .address("23, Grande Avenue")
         .phone("123-321")
         .build();
@@ -156,7 +155,7 @@ public class PatientServiceTest {
         .firstName("John")
         .lastName("Doe")
         .dateOfBirth(LocalDate.of(2022,1,1))
-        .gender(Gender.M)
+        .gender("M")
         .address("23, Grande Avenue")
         .phone("123-321")
         .build();
