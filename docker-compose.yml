@@ -1,0 +1,59 @@
+version: '3.1'
+
+services:
+
+### Patient Service ###
+  patient:
+    image: 'patient_service'
+    container_name: patients
+    ports:
+      - "8081:8081"
+    depends_on:
+      - db
+    environment:
+        - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/patient_db_dev
+        - SPRING_DATASOURCE_USERNAME=postgres
+        - SPRING_DATASOURCE_PASSWORD=root
+        - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+
+### Note Service ###
+  note:
+    image: 'note_service'
+    container_name: notes
+    ports:
+      - "8082:8082"
+    depends_on:
+      - mongo_db
+
+### PostgreSQL ###
+  db:
+    image: 'postgres:13-alpine3.15'
+    container_name: db
+    ports:
+      - "5432:5432"
+    environment:
+          - POSTGRES_PASSWORD=root
+          - POSTGRES_USER=postgres
+          - POSTGRES_DB=patient_db_dev
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+### MongoDB ###
+  mongo_db:
+    image: 'mongo'
+    container_name: 'note_db_container'
+    ports:
+      - "27017:27017"
+
+    environment:
+      - MONGO_INITDB_DATABASE=notes
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=root
+    volumes:
+      - ./init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js:ro
+      - ./mongo-volume:/data/db
+
+
