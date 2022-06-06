@@ -1,4 +1,4 @@
-insert into patient (first_name,last_name,date_of_birth,gender,address,phone)
+insert into patient (last_name,first_name,date_of_birth,gender,address,phone)
 values
 ('Ferguson','Lucas','1968-06-22','M','2 Warren Street','387-866-1399'),
 ('Rees','Pippa','1952-09-27','F','745 West Valley Farms Drive','628-423-0993'),
