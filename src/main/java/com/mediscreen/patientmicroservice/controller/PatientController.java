@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -22,7 +23,7 @@ public class PatientController {
 
   @GetMapping("")
   public ResponseEntity<String> getWelcome(){
-    return new ResponseEntity<>("Welcome to MedicScreen Patient API", HttpStatus.OK);
+    return new ResponseEntity<>("Welcome to Mediscreen Patient API", HttpStatus.OK);
   }
 
   @GetMapping("/patients")
@@ -45,13 +46,13 @@ public class PatientController {
   }
 
   @PostMapping(value = "/patients")
-  public ResponseEntity<Patient> addPatient(@RequestBody Patient patient){
+  public ResponseEntity<Patient> addPatient(@Valid @RequestBody Patient patient){
     Patient patientSaved=service.addPatient(patient);
     return new ResponseEntity<>(patientSaved,HttpStatus.CREATED);
   }
 
   @PutMapping("/patients/{id}")
-  public ResponseEntity<Patient> updatePatient(@PathVariable int id, @RequestBody Patient patientToUpdate){
+  public ResponseEntity<Patient> updatePatient(@PathVariable int id, @Valid @RequestBody Patient patientToUpdate){
     Patient patientUpdated= service.updatePatient(id, patientToUpdate);
 
     if (Objects.isNull(patientUpdated)) {

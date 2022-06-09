@@ -56,7 +56,7 @@ public class PatientControllerTest {
     //When
     mockMvc.perform(get("/patientAPI"))
         .andExpect(status().isOk())
-        .andExpect(content().string(containsString("Welcome to MedicScreen Patient API")));
+        .andExpect(content().string(containsString("Welcome to Mediscreen Patient API")));
   }
 
   @Test
